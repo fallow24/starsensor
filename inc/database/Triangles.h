@@ -18,13 +18,16 @@ class Triangles
     public:
         Triangles(Database db)
         {   
-            printf("Generating possible triangle database");
+            printf("Generating possible triangle database 0%% [          ] 100%%");
+            printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
             fflush(stdout); //flushing the out stream BEFORE calculating
             database = new Triangle[db.size()];
+            int integ = 10;
             for(int i = 0; i < db.size(); i++)
             {
-                if(i % 1000 == 0) {
-                    printf(".");
+                if(((float)i / db.size() * 100) > integ) {
+                    integ+=10;
+                    printf("#");
                     fflush(stdout); //flushing the out stream BEFORE calculating
                 }
                 Startuple t = db.findnearest(i);
