@@ -2,6 +2,8 @@
 
 //Hallo Nils
 
+//sooooso
+
 Bmp file("Sterne.BMP"); 
 Database stardb("hip_red_1.txt"); 
 Triangles triangledb(stardb);
