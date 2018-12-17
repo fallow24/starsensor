@@ -37,6 +37,23 @@ int main()
     //fining middlest point
     Pointf* middlest = Identifier::findmiddlest(focuspoints, marker.getNumberOfStars(), width, height); 
 
+    //calculating all angles
+    float angles[marker.getNumberOfStars() - 1];
+    for(int i = 0; i < marker.getNumberOfStars(); i++)
+    {   
+        
+        float dotproduct = middlest->x * focuspoints[i]->x + middlest->y * focuspoints[i]->y;
+        float abss1 = sqrt(middlest->x * middlest->x + middlest->y * middlest->y);
+        float abss2 = sqrt(focuspoints[i]->x * focuspoints[i]->x + focuspoints[i]->y * focuspoints[i]->y);
+        angles[i] = acos(dotproduct / (abss1 * abss2));
+        
+
+    }
+
+    for(int i = 0; i < marker.getNumberOfStars() - 1; i++) {
+        printf("Angle %d: %f\n", i , angles[i]);
+    }
+
     printf("%d\n", marker.getNumberOfStars());
 
     for(int i = 0; i < marker.getNumberOfStars(); i++)

@@ -32,9 +32,9 @@ class Triangles
                 database[i].id1 = db.stardata()[i];
                 database[i].id2 = t.s1;
                 database[i].id3 = t.s2;
-                database[i].alpha1 = radiansToDegrees(db.anglebetween(db.stardata()[i], t.s1));
-                database[i].alpha2 = radiansToDegrees(db.anglebetween(db.stardata()[i], t.s2));
-                database[i].beta = radiansToDegrees(db.calcbeta(db.stardata()[i], t.s1, t.s2));
+                database[i].alpha1 = (db.anglebetween(db.stardata()[i], t.s1));
+                database[i].alpha2 = (db.anglebetween(db.stardata()[i], t.s2));
+                database[i].beta = (db.calcbeta(db.stardata()[i], t.s1, t.s2));
             }
             printf(" done!\n");
         }
