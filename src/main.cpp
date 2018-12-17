@@ -1,13 +1,5 @@
 #include "Stars.h"
 
-<<<<<<< HEAD
-=======
-//Hallo Fabi
-//Hallo Nils
-
-//sooooso
-
->>>>>>> f1e4f11866a8dafd09d28cb9a9d2456b7542820b
 Bmp file("Sterne.BMP"); 
 Database stardb("hip_red_1.txt"); 
 Triangles triangledb(stardb);
