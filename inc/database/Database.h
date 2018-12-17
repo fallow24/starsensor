@@ -40,6 +40,7 @@ class Database
         string strdata();
         Star* stardata();
         int size();
+        Star getStarWithID(int, int, int);
 
         //should be private
         float calcbeta(Star s, Star t1, Star t2);
