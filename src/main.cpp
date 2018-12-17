@@ -1,5 +1,7 @@
 #include "Stars.h"
 
+//Hallo Fabi
+
 Bmp file("Sterne.BMP"); 
 Database stardb("hip_red_1.txt"); 
 Triangles triangledb(stardb);
