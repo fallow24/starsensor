@@ -1,6 +1,10 @@
 #include "Stars.h"
 
+<<<<<<< HEAD
 //Hallo Fabi
+=======
+//Hallo Nils
+>>>>>>> c11fb94920a7c324754cd9a8174ef0ac5cc13584
 
 Bmp file("Sterne.BMP"); 
 Database stardb("hip_red_1.txt"); 
