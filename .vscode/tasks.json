@@ -1,0 +1,37 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-osternsensor",
+                "-I${workspaceFolder}/inc",
+                "-I${workspaceFolder}/inc/database",
+                "-I${workspaceFolder}/inc/img",
+                "-I${workspaceFolder}/inc/identification",
+                "src/main.cpp",
+                "src/database/*.cpp",
+                "src/identification/*.cpp",
+                "src/img/*.cpp"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "./sternsensor",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
