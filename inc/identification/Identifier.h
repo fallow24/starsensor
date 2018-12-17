@@ -6,11 +6,22 @@
 #include "SeqReg.h"
 #include <math.h>
 
+struct Angles
+{
+    float alpha1, alpha2, beta;
+};
+
+struct PointfAndAngle
+{
+    Pointf* p;
+    float angle;
+};
+
 class Identifier
 {
     public:
         static Pointf* findmiddlest(Pointf** focuspoints, int numberofstars, int width, int height);
-        
+        static Angles* angles(Pointf* middlest, Pointf** focuspoints, int numberofstars);
     private:
 
 

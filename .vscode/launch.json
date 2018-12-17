@@ -9,7 +9,7 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/sternsensor.out",
+            "program": "${workspaceFolder}/sternsensor",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
