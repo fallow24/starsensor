@@ -7,7 +7,8 @@
                 "${workspaceFolder}/inc",
                 "${workspaceFolder}/inc/img",
                 "${workspaceFolder}/inc/database",
-                "${workspaceFolder}/inc/identification"
+                "${workspaceFolder}/inc/identification",
+                "${workspaceFolder}/inc/math"
             ],
             "defines": [],
             "macFrameworkPath": [

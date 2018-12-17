@@ -12,10 +12,12 @@
                 "-I${workspaceFolder}/inc/database",
                 "-I${workspaceFolder}/inc/img",
                 "-I${workspaceFolder}/inc/identification",
+                "-I${workspaceFolder}/inc/math",
                 "src/main.cpp",
                 "src/database/*.cpp",
                 "src/identification/*.cpp",
-                "src/img/*.cpp"
+                "src/img/*.cpp",
+                "src/math/*.cpp"
             ],
             "group": {
                 "kind": "build",

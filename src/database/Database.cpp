@@ -158,3 +158,11 @@ int Database::size()
 {
     return values;
 }
+
+Star Database::getStarWithID(int low, int high, int ID) {
+    int m = (high - low) / 2;
+    Star current = this->stardata()[m];
+    if(current.id > ID) return getStarWithID(low, m, ID);
+    else if(current.id < ID) return getStarWithID(m + 1, high, ID);
+    else return current;
+}
