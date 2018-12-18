@@ -3,6 +3,7 @@
 
 #include "Roi.h"
 #include "Database.h"
+#include "Triangles.h"
 #include "SeqReg.h"
 #include <math.h>
 
@@ -20,6 +21,7 @@ struct PointfAndAngle
 class Identifier
 {
     public:
+        static Triangle bestfit(Triangles triangledb, int dbsize, Angles* angles);
         static Pointf* findmiddlest(Pointf** focuspoints, int numberofstars, int width, int height);
         static Angles* angles(Pointf* middlest, Pointf** focuspoints, int numberofstars);
     private:

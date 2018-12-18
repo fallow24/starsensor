@@ -75,3 +75,23 @@ Angles* Identifier::angles(Pointf* middlest, Pointf** focuspoints, int numberofs
 
     return angs;
 }
+
+Triangle Identifier::bestfit(Triangles triangledb, int dbsize, Angles* angles)
+{
+    float e, e_a1, e_a2, e_b, e_min = 10000000;
+    Triangle tmp, bestFit;
+    for(int i = 0; i < dbsize; i++)
+    {
+        tmp = triangledb.data()[i];
+        e_a1 = (tmp.alpha1 - angles->alpha1) / tmp.alpha1;
+        e_a2 = (tmp.alpha2 - angles->alpha2) / tmp.alpha2;
+        e_b = (tmp.beta - angles->beta) / tmp.beta;
+        e = abs(e_a1)+abs(e_a2)+abs(e_b);
+        if(e < e_min) {
+            e_min = abs(e);
+            bestFit = tmp;
+        }
+    }
+
+    return bestFit;
+}
