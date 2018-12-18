@@ -21,11 +21,14 @@ struct PointfAndAngle
 class Identifier
 {
     public:
-        static Triangle bestfit(Triangles triangledb, int dbsize, Angles* angles);
-        static Pointf* findmiddlest(Pointf** focuspoints, int numberofstars, int width, int height);
-        static Angles* angles(Pointf* middlest, Pointf** focuspoints, int numberofstars);
+        Triangle bestfit(Triangles triangledb, int dbsize, Angles* angles);
+        Pointf* findmiddlest(Pointf** focuspoints, int numberofstars, int width, int height);
+        Angles* angles(Pointf* middlest, Pointf** focuspoints, int numberofstars);
+        Pointf* geta1();
+        Pointf* geta2();
     private:
-
+        Pointf* a1;
+        Pointf* a2;
 
 };
 

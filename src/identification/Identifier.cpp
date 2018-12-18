@@ -73,6 +73,9 @@ Angles* Identifier::angles(Pointf* middlest, Pointf** focuspoints, int numberofs
     angs->alpha2 = a2.angle;
     angs->beta = beta;
 
+    this->a1 = a1.p;
+    this->a2 = a2.p;
+
     return angs;
 }
 
@@ -101,4 +104,14 @@ Triangle Identifier::bestfit(Triangles triangledb, int dbsize, Angles* angles)
     }
 
     return bestFit;
+}
+
+Pointf* Identifier::geta1()
+{
+    return this->a1;
+}
+
+Pointf* Identifier::geta2()
+{
+    return this->a2;
 }

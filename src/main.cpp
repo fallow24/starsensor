@@ -43,14 +43,28 @@ int main()
 
 //- STAR IDENTIFICATION ---
 
+    Identifier identifier;
     //fining middlest point in the picture
-    Pointf* middlest = Identifier::findmiddlest(focuspoints, numberofstars, width, height); 
+    Pointf* m = identifier.findmiddlest(focuspoints, numberofstars, width, height); 
 
     //calculating alpha1, alpha2 and beta angles
-    Angles* angles = Identifier::angles(middlest, focuspoints, numberofstars);
+    Angles* angles = identifier.angles(m, focuspoints, numberofstars);
+    Pointf *a1 = identifier.geta1(), *a2 = identifier.geta2(); //nearest points
 
     //calculating the best triangle
-    Triangle bestFit = Identifier::bestfit(triangledb, stardb.size(), angles);
+    Triangle bestFit = identifier.bestfit(triangledb, stardb.size(), angles);
+
+    /*
+     * TODO: @Nils Lagebestimmung
+     * 'bestFit' ist ein 'Triangle' und enthält die 3 Sterne und die Winkel alpha1, alpha2 und beta. 
+     * Die 3 Sterne sind vom Typ 'Star' und enthalten die ID des Sterns und die x, y & z Komponente des
+     * Einheitsvektores im ECI-Frame.
+     * Ausserdem gibt es die Punkte 'm', 'a1' und 'a2' vom Typ 'Pointf*'.
+     * Die Punkte enthalten enthalten die x und y Koordinaten der Pixel der drei Sterne auf dem Bildsensor.
+     * Der Punkt 'm' ist der mittlere, a1 ist der Punkt mit Winkel alpha1 und a2 der Punkt mit Winkel alpha2.
+     * Der Ursprung des Koordinatensystems auf dem Bildsensor ist (0, 0) und liegt unten links.
+     * Die x-Achse geht nach links, die y-Achse nach oben.
+     */
 
     printf("Angles found in the picture:\nalpha1\t\talpha2\t\tbeta\n");
     printf("%f\t%f\t%f\n", radiansToDegrees(angles->alpha1), radiansToDegrees(angles->alpha2), radiansToDegrees(angles->beta));
