@@ -78,18 +78,25 @@ Angles* Identifier::angles(Pointf* middlest, Pointf** focuspoints, int numberofs
 
 Triangle Identifier::bestfit(Triangles triangledb, int dbsize, Angles* angles)
 {
+    //error of alpha1, alpha2, beta
     float e, e_a1, e_a2, e_b, e_min = 10000000;
     Triangle tmp, bestFit;
-    for(int i = 0; i < dbsize; i++)
-    {
+    //itterating the triangle database
+    for(int i = 0; i < dbsize; i++) {
         tmp = triangledb.data()[i];
+
+        //claculate all partial-relative errors
         e_a1 = (tmp.alpha1 - angles->alpha1) / tmp.alpha1;
         e_a2 = (tmp.alpha2 - angles->alpha2) / tmp.alpha2;
         e_b = (tmp.beta - angles->beta) / tmp.beta;
+
+        //relative error
         e = abs(e_a1)+abs(e_a2)+abs(e_b);
+
+        //if the relative error is smaller than the current relativ error
         if(e < e_min) {
             e_min = abs(e);
-            bestFit = tmp;
+            bestFit = tmp; //bestfit is the current triangle
         }
     }
 
