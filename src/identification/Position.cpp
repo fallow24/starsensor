@@ -1,10 +1,6 @@
 #include "Position.h"
 #include "Vec3D.h"
 
-struct Quaternion {
-    float q0, q1, q2, q3;
-};
-
 // calculate staVec3D Vec3D::operator/(float scalar)Vec3D Vec3D::operator/(float scalar)r vectors
 vectorTuple Position::calcStarVecs(Pointf* M, Pointf* S1, int width, int height) {
     vectorTuple* sv = new vectorTuple;
@@ -52,5 +48,5 @@ Matrix Position::calcRotationMatrix(vectorTuple senframe, vectorTuple eciframe) 
 
 //transform rotationmatrix to quaternion
 Quaternion Position::rotToQuat(Matrix rot) {
-    return *new Quaternion();
+    return *new Quaternion(0,0,0,0);//ToDo
 }
