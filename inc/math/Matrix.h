@@ -12,6 +12,7 @@ class Matrix {
         void printMatrix();
         Matrix operator*(Matrix);
         Matrix transpose();
+        double trace();
 };
 
 #endif

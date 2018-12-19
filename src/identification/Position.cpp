@@ -48,5 +48,10 @@ Matrix Position::calcRotationMatrix(vectorTuple senframe, vectorTuple eciframe) 
 
 //transform rotationmatrix to quaternion
 Quaternion Position::rotToQuat(Matrix rot) {
-    return *new Quaternion(0,0,0,0);//ToDo
+    double q3 = 0.5 * sqrt(1 + rot.trace());
+    Vec3D* q = new Vec3D(rot.matrix[7] - rot.matrix[5], rot.matrix[2] - rot.matrix[6], rot.matrix[3] - rot.matrix[1]);
+    *q =  *q * 0.25 / q3;
+    return *new Quaternion(q->x,q->y,q->z,q3);
+    
+
 }

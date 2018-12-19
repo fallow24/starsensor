@@ -54,22 +54,21 @@ int main()
     //calculating the best triangle
     Triangle bestFit = identifier.bestfit(triangledb, stardb.size(), angles);
 
-    // for(int i = 0; i < numberofstars; i++)
-    // {
-    //     printf("Star #: %d\tx: %f\ty: %f\n", i, focuspoints[i]->x, focuspoints[i]->y);
-    // }
+// - CALCULATING ORIENTATION ---
 
-    /*
-     * TODO: @Nils Lagebestimmung
-     * 'bestFit' ist ein 'Triangle' und enthält die 3 Sterne und die Winkel alpha1, alpha2 und beta. 
-     * Die 3 Sterne sind vom Typ 'Star' und enthalten die ID des Sterns und die x, y & z Komponente des
-     * Einheitsvektores im ECI-Frame.
-     * Ausserdem gibt es die Punkte 'm', 'a1' und 'a2' vom Typ 'Pointf*'.
-     * Die Punkte enthalten enthalten die x und y Koordinaten der Pixel der drei Sterne auf dem Bildsensor.
-     * Der Punkt 'm' ist der mittlere, a1 ist der Punkt mit Winkel alpha1 und a2 der Punkt mit Winkel alpha2.
-     * Der Ursprung des Koordinatensystems auf dem Bildsensor ist (0, 0) und liegt unten links.
-     * Die x-Achse geht nach links, die y-Achse nach oben. 
-     */
+    vectorTuple sensorframe = Position::calcStarVecs(m, a1, width, height);
+    vectorTuple eciframe;
+
+    Star m_star = bestFit.id1;
+    Star a1_star = bestFit.id2;
+
+    Vec3D eci_m(m_star.x, m_star.y, m_star.z);
+    Vec3D eci_a1(a1_star.x, a1_star.y, a1_star.z);
+
+    eciframe.v1 = eci_m;
+    eciframe.v2 = eci_a1;
+
+    Matrix rotationMatrix = Position::calcRotationMatrix(sensorframe, eciframe);
 
     printf("Angles found in the picture:\nalpha1\t\talpha2\t\tbeta\n");
     printf("%f\t%f\t%f\n", radiansToDegrees(angles->alpha1), radiansToDegrees(angles->alpha2), radiansToDegrees(angles->beta));
@@ -79,18 +78,12 @@ int main()
     
     printf("Best fit found:\n%f\t%f\t%f", radiansToDegrees(bestFit.alpha1), radiansToDegrees(bestFit.alpha2), radiansToDegrees(bestFit.beta));
     printf(" with ID1: %d\tID2: %d\tID3: %d\n", bestFit.id1.id, bestFit.id2.id, bestFit.id3.id);
+    
+    printf("mx %f, my %f, mz %f\n", m_star.x, m_star.y, m_star.z);
+    printf("a1 x %f, a1 y %f, a1 z %f\n", a1_star.x, a1_star.y, a1_star.z);
 
-    // Star s;
-    // for(int i = 0; i < stardb.size(); i++)
-    // {
-    //     s = stardb.stardata()[i];
-    //     printf("Id: %d, x %f, y %f, z %f, mag %f\n", s.id, s.x, s.y, s.z, s.magnitude);
-    // }
-    // Triangle t;
-    // for(int i = 0; i < stardb.size(); i++) 
-    // {
-    //     t = triangledb.data()[i];
-    //     printf("ID1: %d\tID2: %d\tID3: %d\tA1: %f\tA2: %f\tB: %f\n", t.id1.id, t.id2.id, t.id3.id, radiansToDegrees(t.alpha1), radiansToDegrees(t.alpha2), radiansToDegrees(t.beta));
-    // }
+    rotationMatrix.printMatrix();
 
+    Quaternion q = Position::rotToQuat(rotationMatrix);
+    printf("\n[%f]\n[%f]\n[%f]\n[%f]", q.q0, q.q1, q.q2, q.q3);
 }

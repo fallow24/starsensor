@@ -13,10 +13,10 @@ struct vectorTuple {
 
 class Position {
     public:
-        vectorTuple calcStarVecs(Pointf*, Pointf*, int, int);
-        vectorTuple getStarsWithID(Database, int, int);
-        Matrix calcRotationMatrix(vectorTuple, vectorTuple);
-        Quaternion rotToQuat(Matrix rot);
+        static vectorTuple calcStarVecs(Pointf*, Pointf*, int, int);
+        static vectorTuple getStarsWithID(Database, int, int);
+        static Matrix calcRotationMatrix(vectorTuple, vectorTuple);
+        static Quaternion rotToQuat(Matrix rot);
 };
 
 #endif

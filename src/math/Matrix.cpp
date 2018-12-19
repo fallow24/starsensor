@@ -68,6 +68,10 @@ Matrix Matrix::transpose() {
     return *result;
 }
 
-
+double Matrix::trace() {
+    double sum = 0;
+    for(int i = 0; i < this->lines; i++) sum += this->matrix[i + i * this->lines];
+    return sum;
+}
 
 
