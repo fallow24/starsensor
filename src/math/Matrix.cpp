@@ -4,7 +4,7 @@
 Matrix::Matrix(int lines, int columns) {
     this->lines = lines;
     this->columns = columns;
-    this->matrix = new float[lines * columns];
+    this->matrix = new double[lines * columns];
     for(int i = 0; i < lines * columns; i++) matrix[i] = 0;
 }
 
@@ -12,7 +12,7 @@ Matrix::Matrix(int lines, int columns) {
 Matrix::Matrix(Vec3D x, Vec3D y, Vec3D z) {
     this->lines = 3;
     this->columns = 3;
-    this->matrix = new float[9];
+    this->matrix = new double[9];
     matrix[0] = x.x;
     matrix[1] = y.x;
     matrix[2] = z.x;

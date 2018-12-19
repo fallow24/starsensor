@@ -5,7 +5,7 @@
  * grayscale value from 0 to 255
  * a star gets recognized if grayscale > THRESHOLD
  */
-#define THRESHOLD 21 //threshold for star recognizion
+#define THRESHOLD 15 //threshold for star recognizion
 
 class Bmp
 {

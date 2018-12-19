@@ -13,7 +13,7 @@ string Database::readFromFile()
     string str; //buffer used to store one string
     string file_contents, buffer; //file_contents: the whole database as a string
     //string buffer: buffer used to store one line of string
-    int magnitude;
+    double magnitude;
 
     //filling the database
     for (int i = 0; i < s; i++)
@@ -28,7 +28,7 @@ string Database::readFromFile()
             if(j == 3) 
             {
                 magnitude = stof(str);
-                if(magnitude < MAX_MAGNITUDE) {
+                if(magnitude <= MAX_MAGNITUDE) {
                     file_contents += buffer;
                     file_contents.push_back('\n');
                 }
@@ -59,7 +59,7 @@ Star* Database::str2db()
     values = s;
     istringstream f(data);
     string line, token, delimiter = " ";
-    float rek, dek, e = degreesToRadians(23.44); //rektaszension und deklenation, e = schiefe der ekliptik
+    double rek, dek, e = degreesToRadians(23.44); //rektaszension und deklenation, e = schiefe der ekliptik
     
     //filling the database
     int i = 0, j = 0;
@@ -81,6 +81,8 @@ Star* Database::str2db()
             line.erase(0, pos + delimiter.length());
             j++;
         }
+        //printf("ID %d, REK %f, DEK %f, MAG %f\n", db[i].id, rek, dek, db[i].magnitude);
+
         //conversion from deg to rad
         rek = degreesToRadians(rek);
         dek = degreesToRadians(dek);
@@ -94,19 +96,19 @@ Star* Database::str2db()
     return db;
 }
 
-float Database::anglebetween(Star s1, Star s2)
+double Database::anglebetween(Star s1, Star s2)
 {
-    float dotproduct = s1.x * s2.x + s1.y * s2.y + s1.z * s2.z;
-    float abss1 = sqrt(s1.x * s1.x + s1.y * s1.y + s1.z * s1.z);
-    float abss2 = sqrt(s2.x * s2.x + s2.y * s2.y + s2.z * s2.z);
+    double dotproduct = s1.x * s2.x + s1.y * s2.y + s1.z * s2.z;
+    //double abss1 = sqrt(s1.x * s1.x + s1.y * s1.y + s1.z * s1.z);
+    //double abss2 = sqrt(s2.x * s2.x + s2.y * s2.y + s2.z * s2.z);
 
-    return acos(dotproduct / (abss1 * abss2));
+    return acos(dotproduct);
 }
 
-float Database::calcbeta(Star s, Star t1, Star t2)
+double Database::calcbeta(Star s, Star t1, Star t2)
 {
-    float s_t1_x, s_t1_y, s_t1_z; //Vector S_T1
-    float s_t2_x, s_t2_y, s_t2_z; //Vector S_T2
+    double s_t1_x, s_t1_y, s_t1_z; //Vector S_T1
+    double s_t2_x, s_t2_y, s_t2_z; //Vector S_T2
 
     //Vector S_T1
     s_t1_x = t1.x - s.x;
@@ -118,34 +120,44 @@ float Database::calcbeta(Star s, Star t1, Star t2)
     s_t2_y = t2.y - s.y;
     s_t2_z = t2.z - s.z;
 
-    float dotproduct = s_t1_x * s_t2_x + s_t1_y * s_t2_y + s_t1_z * s_t2_z;
-    float abs_s_t1 = sqrt(s_t1_x * s_t1_x + s_t1_y * s_t1_y + s_t1_z * s_t1_z);
-    float abs_s_t2 = sqrt(s_t2_x * s_t2_x + s_t2_y * s_t2_y + s_t2_z * s_t2_z);
+    double dotproduct = s_t1_x * s_t2_x + s_t1_y * s_t2_y + s_t1_z * s_t2_z;
+    double abs_s_t1 = sqrt(s_t1_x * s_t1_x + s_t1_y * s_t1_y + s_t1_z * s_t1_z);
+    double abs_s_t2 = sqrt(s_t2_x * s_t2_x + s_t2_y * s_t2_y + s_t2_z * s_t2_z);
 
     return acos(dotproduct / (abs_s_t1 * abs_s_t2));
 
 }
 
-Startuple Database::findnearest(int index)
+Startuple* Database::findnearest(int index)
 {
     Star reference = stars[index];
-    float angle, lowestangle1 = 2*M_PI, lowestangle2 = 2*M_PI; //in rad (nothing can be bigger than 2PI)
+    double angle, lowestangle1 = 10000, lowestangle2 = 10000; //in rad (nothing can be bigger than 2PI)
     int index1 = 0, index2 = 0;
 
     for(int k = 0; k < values; k++)
     {
-        angle = abs(anglebetween(reference, stars[k]));
-        if(index != k && angle < lowestangle1)
-        {
-            lowestangle2 = lowestangle1;
-            index2 = index1;
+        if(index != k) {
+            angle = (anglebetween(reference, stars[k]));
 
-            lowestangle1 = angle;
-            index1 = k;
+            if(angle < lowestangle1) {
+                lowestangle2 = lowestangle1;
+                index2 = index1;
+
+                lowestangle1 = angle;
+                index1 = k;
+            } else if(angle < lowestangle2) {
+                lowestangle2 = angle;
+                index2 = k;
+            }
+
         }
+
     } 
 
-    Startuple nearest = {stars[index1], stars[index2]};
+    Startuple* nearest = new Startuple;
+    nearest->s1 = stars[index1];
+    nearest->s2 = stars[index2];
+    
     return nearest;
 }
 

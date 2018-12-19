@@ -3,8 +3,8 @@
 
 class Quaternion {
     public:
-        float q0, q1, q2, q3;
-        Quaternion(float, float, float, float);
+        double q0, q1, q2, q3;
+        Quaternion(double,double,double,double);
         void printQuat();
 };
 

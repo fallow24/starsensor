@@ -9,13 +9,13 @@
 
 struct Angles
 {
-    float alpha1, alpha2, beta;
+    double alpha1, alpha2, beta;
 };
 
 struct PointfAndAngle
 {
     Pointf* p;
-    float angle;
+    double angle;
 };
 
 class Identifier

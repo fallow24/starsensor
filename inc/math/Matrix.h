@@ -6,7 +6,7 @@
 class Matrix {
     public:
         int lines, columns;
-        float* matrix;
+        double* matrix;
         Matrix(int, int);
         Matrix(Vec3D, Vec3D, Vec3D);
         void printMatrix();

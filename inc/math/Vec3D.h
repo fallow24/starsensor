@@ -4,16 +4,16 @@
 class Vec3D {
 
     public:
-        float x,y,z;
+        double x,y,z;
         Vec3D();
-        Vec3D(float,float,float);
+        Vec3D(double,double,double);
         //float operator[]();
         Vec3D operator+(Vec3D);
         Vec3D operator*(Vec3D);
-        Vec3D operator*(float);
-        Vec3D operator/(float scalar);
-        float dot(Vec3D);
-        float norm();
+        Vec3D operator*(double);
+        Vec3D operator/(double scalar);
+        double dot(Vec3D);
+        double norm();
         Vec3D cross(Vec3D);
 };
 

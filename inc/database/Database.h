@@ -16,8 +16,8 @@ using namespace std;
 struct Star
 {
     int id; 
-    float x, y, z;
-    float magnitude;
+    double x, y, z;
+    double magnitude;
 };
 
 struct Startuple
@@ -43,9 +43,9 @@ class Database
         Star getStarWithID(int);
 
         //should be private
-        float calcbeta(Star s, Star t1, Star t2);
-        Startuple findnearest(int index);
-        float anglebetween(Star s1, Star s2);
+        double calcbeta(Star s, Star t1, Star t2);
+        Startuple* findnearest(int index);
+        double anglebetween(Star s1, Star s2);
 
     private: 
         const char* filename;
