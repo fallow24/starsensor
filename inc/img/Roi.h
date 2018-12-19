@@ -7,8 +7,8 @@
 
 struct Pointf
 {
-    float x, y;
-    Pointf(float x, float y) : x(x), y(y) { }
+    double x, y;
+    Pointf(double x, double y) : x(x), y(y) { }
 };
 
 class Roi 

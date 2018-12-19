@@ -24,14 +24,17 @@ Angles* Identifier::angles(Pointf* middlest, Pointf** focuspoints, int numberofs
 
     //calculating all angles
     PointfAndAngle* pointfandangles = new PointfAndAngle[numberofstars - 1];
-    float angle;
+    double angle, dotproduct, abss1, abss2, z_2;
     int j = 0;
     for(int i = 0; i < numberofstars; i++)
     {   
-        float dotproduct = middlest->x * focuspoints[i]->x + middlest->y * focuspoints[i]->y;
-        float abss1 = sqrt(middlest->x * middlest->x + middlest->y * middlest->y);
-        float abss2 = sqrt(focuspoints[i]->x * focuspoints[i]->x + focuspoints[i]->y * focuspoints[i]->y);
+        //Angle calculation
+        z_2 = 25000.0 / 5.8 * 25000.0 / 5.8; //z-component
+        dotproduct = middlest->x * focuspoints[i]->x + middlest->y * focuspoints[i]->y + z_2;
+        abss1 = sqrt(middlest->x * middlest->x + middlest->y * middlest->y + z_2);
+        abss2 = sqrt(focuspoints[i]->x * focuspoints[i]->x + focuspoints[i]->y * focuspoints[i]->y + z_2);
         angle = acos(dotproduct / (abss1 * abss2));
+
         if(fabs(angle) > 0.000001) {
             pointfandangles[j].angle = angle;
             pointfandangles[j].p = focuspoints[i]; 
@@ -49,24 +52,26 @@ Angles* Identifier::angles(Pointf* middlest, Pointf** focuspoints, int numberofs
         if(pointfandangles[i].angle < a1.angle) {
             a2 = a1;
             a1 = pointfandangles[i];
-        }
+        } else if(pointfandangles[i].angle < a2.angle) {
+            a2 = pointfandangles[i];
+        } 
     }
 
     //find beta
 
     //Vector M_A1
-    float M_A1_x = a1.p->x - middlest->x;
-    float M_A1_y = a1.p->y - middlest->y;
+    double M_A1_x = a1.p->x - middlest->x;
+    double M_A1_y = a1.p->y - middlest->y;
 
     //Vector M_A2
-    float M_A2_x = a2.p->x - middlest->x;
-    float M_A2_y = a2.p->y - middlest->y;
+    double M_A2_x = a2.p->x - middlest->x;
+    double M_A2_y = a2.p->y - middlest->y;
     
-    float dotproduct = M_A1_x * M_A2_x + M_A1_y * M_A2_y;
-    float absMA1 = sqrt(M_A1_x * M_A1_x + M_A1_y * M_A1_y);
-    float absMA2 = sqrt(M_A2_x * M_A2_x + M_A2_y * M_A2_y);
+    dotproduct = M_A1_x * M_A2_x + M_A1_y * M_A2_y;
+    double absMA1 = sqrt(M_A1_x * M_A1_x + M_A1_y * M_A1_y);
+    double absMA2 = sqrt(M_A2_x * M_A2_x + M_A2_y * M_A2_y);
 
-    float beta = acos(dotproduct / (absMA1 * absMA2));
+    double beta = acos(dotproduct / (absMA1 * absMA2));
 
     //All angles are calculated now
     angs->alpha1 = a1.angle;
@@ -82,7 +87,7 @@ Angles* Identifier::angles(Pointf* middlest, Pointf** focuspoints, int numberofs
 Triangle Identifier::bestfit(Triangles triangledb, int dbsize, Angles* angles)
 {
     //error of alpha1, alpha2, beta
-    float e, e_a1, e_a2, e_b, e_min = 10000000;
+    double e, e_a1, e_a2, e_b, e_min = 10000000;
     Triangle tmp, bestFit;
     //itterating the triangle database
     for(int i = 0; i < dbsize; i++) {
@@ -90,15 +95,15 @@ Triangle Identifier::bestfit(Triangles triangledb, int dbsize, Angles* angles)
 
         //claculate all partial-relative errors
         e_a1 = (tmp.alpha1 - angles->alpha1) / tmp.alpha1;
-        e_a2 = (tmp.alpha2 - angles->alpha2) / tmp.alpha2;
-        e_b = (tmp.beta - angles->beta) / tmp.beta;
+        e_a2 = (tmp.alpha2 - angles->alpha2) /tmp.alpha2;
+        e_b = (tmp.beta - angles->beta) /tmp.beta;
 
         //relative error
-        e = abs(e_a1)+abs(e_a2)+abs(e_b);
+        e = fabs(e_a1) + fabs(e_a2) + fabs(e_b);
 
         //if the relative error is smaller than the current relativ error
         if(e < e_min) {
-            e_min = abs(e);
+            e_min = fabs(e);
             bestFit = tmp; //bestfit is the current triangle
         }
     }

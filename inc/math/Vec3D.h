@@ -4,10 +4,10 @@
 class Vec3D {
 
     public:
-        float x,y,z;
+        double x,y,z;
         Vec3D operator+(Vec3D);
         Vec3D operator*(Vec3D);
-        float dot(Vec3D);
+        double dot(Vec3D);
 };
 
 #endif

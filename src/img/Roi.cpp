@@ -7,7 +7,7 @@ Pointf* Roi::focus(int* grayscaledImage, int width, std::vector<Point*> star)
     Point* brightest = brightestPixel(grayscaledImage, width, star);
     int n = determineSize(brightest, grayscaledImage, width); //with advanced dynamic roi
 
-    float sumx = 0, sumy = 0, sumh = 0, h;
+    double sumx = 0, sumy = 0, sumh = 0, h;
     //sum of all x, y and h
     for(int x = brightest->x - n/2; x < brightest->x + n/2; x++) {
         for(int y = brightest->y - n/2; y < brightest->y + n/2; y++) {
@@ -18,9 +18,9 @@ Pointf* Roi::focus(int* grayscaledImage, int width, std::vector<Point*> star)
         }
     }
 
-    //calc focuspoint (x, y) in float
-    float x = sumx/sumh;
-    float y = sumy/sumh;
+    //calc focuspoint (x, y) in double
+    double x = sumx/sumh;
+    double y = sumy/sumh;
     Pointf* focuspoint = new Pointf(x, y);
 
     return focuspoint;

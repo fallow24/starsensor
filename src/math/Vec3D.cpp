@@ -16,6 +16,6 @@ Vec3D Vec3D::operator*(Vec3D v) {
     return *result;
 }
 
-float Vec3D::dot(Vec3D v) {
+double Vec3D::dot(Vec3D v) {
     return this->x * v.x + this->y * v.y + this->z * v.z;
 }
