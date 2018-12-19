@@ -9,7 +9,6 @@ struct Pointf
 {
     float x, y;
     Pointf(float x, float y) : x(x), y(y) { }
-    Pointf(){}
 };
 
 class Roi 

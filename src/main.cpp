@@ -1,15 +1,16 @@
 #include "Stars.h"
 
 Bmp file("Sterne.BMP"); 
-Database stardb("hip_red_1.txt"); 
-Triangles triangledb(stardb);
 
 //width and heigth of the bmp
 int width = file.getWidth();
 int height = file.getHeight();
+int numberofstars; //number of stars found in the picture
 
 int main() 
 { 
+//- PICTURE RECOGNITION ---
+
     //reading rgb values from BMP file
     unsigned char* rgbImage = file.readRGB();
 
@@ -28,39 +29,49 @@ int main()
     //recognition of stars in the digitalized (binary) image
     SeqReg marker; 
     std::vector<Point*> *stars = marker.classify(digitalImage, width, height); 
+    numberofstars = marker.getNumberOfStars();
     delete[] digitalImage; 
 
     //calculate all the focus points 
-    Pointf** focuspoints = Roi::focuspoints(grayscaledImage, width, stars, marker.getNumberOfStars());
+    Pointf** focuspoints = Roi::focuspoints(grayscaledImage, width, stars,numberofstars);
     delete[] grayscaledImage; 
 
-    //fining middlest point
-    Pointf* middlest = Identifier::findmiddlest(focuspoints, marker.getNumberOfStars(), width, height); 
+//- DATABASE SETUP ---
 
-    //calculating all angles
-    float angles[marker.getNumberOfStars() - 1];
-    for(int i = 0; i < marker.getNumberOfStars(); i++)
-    {   
-        
-        float dotproduct = middlest->x * focuspoints[i]->x + middlest->y * focuspoints[i]->y;
-        float abss1 = sqrt(middlest->x * middlest->x + middlest->y * middlest->y);
-        float abss2 = sqrt(focuspoints[i]->x * focuspoints[i]->x + focuspoints[i]->y * focuspoints[i]->y);
-        angles[i] = acos(dotproduct / (abss1 * abss2));
-        
+    Database stardb("hip_red_1.txt"); 
+    Triangles triangledb(stardb);
 
-    }
+//- STAR IDENTIFICATION ---
 
-    for(int i = 0; i < marker.getNumberOfStars() - 1; i++) {
-        printf("Angle %d: %f\n", i , angles[i]);
-    }
+    Identifier identifier;
+    //fining middlest point in the picture
+    Pointf* m = identifier.findmiddlest(focuspoints, numberofstars, width, height); 
 
-    printf("%d\n", marker.getNumberOfStars());
+    //calculating alpha1, alpha2 and beta angles
+    Angles* angles = identifier.angles(m, focuspoints, numberofstars);
+    Pointf *a1 = identifier.geta1(), *a2 = identifier.geta2(); //nearest points
 
-    for(int i = 0; i < marker.getNumberOfStars(); i++)
-    {
-        printf("Point %d = (%f, %f)\n", i, focuspoints[i]->x, focuspoints[i]->y);
-    }
+    //calculating the best triangle
+    Triangle bestFit = identifier.bestfit(triangledb, stardb.size(), angles);
 
-    printf("Middlest: Point = (%f, %f)\n", middlest->x, middlest->y);
+    /*
+     * TODO: @Nils Lagebestimmung
+     * 'bestFit' ist ein 'Triangle' und enthält die 3 Sterne und die Winkel alpha1, alpha2 und beta. 
+     * Die 3 Sterne sind vom Typ 'Star' und enthalten die ID des Sterns und die x, y & z Komponente des
+     * Einheitsvektores im ECI-Frame.
+     * Ausserdem gibt es die Punkte 'm', 'a1' und 'a2' vom Typ 'Pointf*'.
+     * Die Punkte enthalten enthalten die x und y Koordinaten der Pixel der drei Sterne auf dem Bildsensor.
+     * Der Punkt 'm' ist der mittlere, a1 ist der Punkt mit Winkel alpha1 und a2 der Punkt mit Winkel alpha2.
+     * Der Ursprung des Koordinatensystems auf dem Bildsensor ist (0, 0) und liegt unten links.
+     * Die x-Achse geht nach links, die y-Achse nach oben.
+     */
+
+    printf("Angles found in the picture:\nalpha1\t\talpha2\t\tbeta\n");
+    printf("%f\t%f\t%f\n", radiansToDegrees(angles->alpha1), radiansToDegrees(angles->alpha2), radiansToDegrees(angles->beta));
     
+    printf("Best fit found:\n%f\t%f\t%f", radiansToDegrees(bestFit.alpha1), radiansToDegrees(bestFit.alpha2), radiansToDegrees(bestFit.beta));
+    printf(" with ID1: %d\tID2: %d\tID3: %d\n", bestFit.id1.id, bestFit.id2.id, bestFit.id3.id);
+
+
+
 }

@@ -4,11 +4,13 @@
 unsigned char* Bmp::readRGB()
 {
     printf("Read .bmp file... ");
+    fflush(stdout);
     int size = 3 * width * height;
     unsigned char* data = new unsigned char[size]; // allocate 3 bytes per pixel
     fread(data, sizeof(unsigned char), size, f); // read the rest of the data at once
     fclose(f);
     printf(" done!\n");
+    fflush(stdout);
 
     return data; 
 }
@@ -18,6 +20,7 @@ int* Bmp::grayscaleFromRGB(unsigned char* rgb)
     int* grayscaledImage = new int[width * height]; 
     
     printf("Converting .bmp file in grayscale...");
+    fflush(stdout);
     unsigned char r, g, b;
     for(int i = 0; i < width; i++)
     {
@@ -30,6 +33,7 @@ int* Bmp::grayscaleFromRGB(unsigned char* rgb)
         }   
     }
     printf(" done!\n");
+    fflush(stdout);
     
     return grayscaledImage;
 }
@@ -39,6 +43,7 @@ int* Bmp::digitalize(int* gray)
     int* digitalImage = new int[width * height];
 
     printf("Converting grayscale to binary...");
+    fflush(stdout);
     for(int i = 0; i < width; i++){
         for(int j = 0; j < height; j++) {
             if (gray[j * width + i] > THRESHOLD) digitalImage[j * width + i] = 1;
@@ -46,6 +51,7 @@ int* Bmp::digitalize(int* gray)
         }
     }
     printf(" done!\n");
+    fflush(stdout);
 
     return digitalImage;
 }
