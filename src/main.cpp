@@ -54,36 +54,45 @@ int main()
     //calculating the best triangle
     Triangle bestFit = identifier.bestfit(triangledb, stardb.size(), angles);
 
-// - CALCULATING ORIENTATION ---
+//- CALCULATING ORIENTATION ---
 
+    //getting starvectors in the sensorframe
     vectorTuple sensorframe = Position::calcStarVecs(m, a1, width, height);
+    
+    //getting starvectors in the ECI-Frame
     vectorTuple eciframe;
 
-    Star m_star = bestFit.id1;
-    Star a1_star = bestFit.id2;
-
+    Star m_star = bestFit.id1; //extracting the middlest star from the bestfit triangle
+    Star a1_star = bestFit.id2; //extracting the nearest star from the bestfit triangle
     Vec3D eci_m(m_star.x, m_star.y, m_star.z);
     Vec3D eci_a1(a1_star.x, a1_star.y, a1_star.z);
 
     eciframe.v1 = eci_m;
     eciframe.v2 = eci_a1;
 
+    //calculating rotation matrix with sensorframe and ECI-Frame vectors
     Matrix rotationMatrix = Position::calcRotationMatrix(sensorframe, eciframe);
 
-    printf("Angles found in the picture:\nalpha1\t\talpha2\t\tbeta\n");
-    printf("%f\t%f\t%f\n", radiansToDegrees(angles->alpha1), radiansToDegrees(angles->alpha2), radiansToDegrees(angles->beta));
-    // printf("Star 1: x = %f, y = %f\n", m->x, m->y);
-    // printf("Star 2: x = %f, y = %f\n", a1->x, a1->y);
-    // printf("Star 3: x = %f, y = %f\n", a2->x, a2->y);
+    //calculating a quaternion from the rotation matrix
+    Quaternion q = Position::rotToQuat(rotationMatrix);
     
-    printf("Best fit found:\n%f\t%f\t%f", radiansToDegrees(bestFit.alpha1), radiansToDegrees(bestFit.alpha2), radiansToDegrees(bestFit.beta));
-    printf(" with ID1: %d\tID2: %d\tID3: %d\n", bestFit.id1.id, bestFit.id2.id, bestFit.id3.id);
-    
-    printf("mx %f, my %f, mz %f\n", m_star.x, m_star.y, m_star.z);
-    printf("a1 x %f, a1 y %f, a1 z %f\n", a1_star.x, a1_star.y, a1_star.z);
+//- PRINTING TO THE CONSOLE
 
+    printf("\nStar m:\nx = %f, y = %f\n", m->x, m->y);
+    
+    printf("\nAngles found in the picture:\nalpha1\t\talpha2\t\tbeta\n");
+    printf("%f\t%f\t%f\n", radiansToDegrees(angles->alpha1), radiansToDegrees(angles->alpha2), radiansToDegrees(angles->beta));
+    
+    printf("\nBest fit found in triangle database:\n%f\t%f\t%f", radiansToDegrees(bestFit.alpha1), radiansToDegrees(bestFit.alpha2), radiansToDegrees(bestFit.beta));
+    printf("\tID1: %d\tID2: %d\tID3: %d\n", bestFit.id1.id, bestFit.id2.id, bestFit.id3.id);
+    
+    printf("\nSensorframe Vectors\nO_M:\nx: %f, y: %f, z: %f\n", sensorframe.v1.x, sensorframe.v1.y, sensorframe.v1.z);
+    printf("O_A1:\nx: %f, y: %f, z: %f\n", sensorframe.v2.x, sensorframe.v2.y, sensorframe.v2.z);
+    
+    printf("\nRotationsmatix:\n");
     rotationMatrix.printMatrix();
 
-    Quaternion q = Position::rotToQuat(rotationMatrix);
-    printf("\n[%f]\n[%f]\n[%f]\n[%f]", q.q0, q.q1, q.q2, q.q3);
+    printf("\nQuaternion:");
+    printf("\nq1 =\n\t[%f]\nq2 =\n\t[%f]\nq3 =\n\t[%f]\nq4 =\n\t[%f]\n", q.q0, q.q1, q.q2, q.q3);
+    
 }
